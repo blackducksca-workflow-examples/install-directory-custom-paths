@@ -7,15 +7,19 @@ on:
     branches: [ main ]
                                                                                                                                                                                                                                          
 jobs:
-  blackduck-scan:
+  blackduck-sca-scan:
     runs-on: [mac-arm-sh]
                                                                                                                                                                                                                                          
     steps:
     
     - name: Checkout Source
       uses: actions/checkout@v4
+
+    - name: Create detect install directory                                                                                                                                                                                                  
+      run: mkdir -p detect-install-directory                                                                                                                                                                                                 
+      shell: bash                                                                                                                                                                                                                                        
                                                                                                                                                                                                                                          
-    - name: Black Duck SCA Scan
+    - name: Black Duck SCA Scan with Custom paths
       uses: blackduck-inc/black-duck-security-scan@v2
       with:
         blackducksca_url: ${{ vars.BLACKDUCKSCA_URL }}
