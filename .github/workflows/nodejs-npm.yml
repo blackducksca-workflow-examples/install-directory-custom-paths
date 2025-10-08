@@ -1,32 +1,42 @@
-name: Install Directory and custom paths
+name: Black Duck SCA Buildless Scan
                                                                                                                                                                                                                                          
 on:
   push:
-    branches: [ main ]
+    branches: [ main, master, develop, stage, release ]
   pull_request:
-    branches: [ main ]
+    branches: [ main, master, develop, stage, release ]
                                                                                                                                                                                                                                          
 jobs:
   blackduck-sca-scan:
-    runs-on: [mac-arm-sh]
+    runs-on: [ mac-arm-sh ]
                                                                                                                                                                                                                                          
     steps:
     
     - name: Checkout Source
       uses: actions/checkout@v4
 
-    - name: Create detect install directory                                                                                                                                                                                                  
-      run: mkdir -p detect-install-directory                                                                                                                                                                                                 
-      shell: bash                                                                                                                                                                                                                                        
+    # - name: Create detect install directory                                                                                                                                                                                                  
+    #   run: mkdir -p detect-install-directory                                                                                                                                                                                                 
+    #   shell: bash                                                                                                                                                                                                                                        
+
+    - name: Use Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+                                                                                                                                                                                                                                          
+    # - name: Build Project
+    #   run: |
+    #     cd nodejs-npm
+        #npm install
                                                                                                                                                                                                                                          
-    - name: Black Duck SCA Scan with Custom paths
+    - name: Black Duck SCA Buildless Scan
       uses: blackduck-inc/black-duck-security-scan@v2
       with:
         blackducksca_url: ${{ vars.BLACKDUCKSCA_URL }}
         blackducksca_token: ${{ secrets.BLACKDUCKSCA_TOKEN }}
         github_token: ${{ secrets.GITHUB_TOKEN }}
         detect_args: "--detect.source.path=${{ github.workspace }}/nodejs-npm"
-        detect_install_directory: detect-install-directory
+        #detect_install_directory: detect-install-directory
 
       env:
         DETECT_PROJECT_NAME: ${{ github.event.repository.name }}
