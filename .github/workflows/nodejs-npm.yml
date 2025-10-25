@@ -24,3 +24,5 @@ jobs:
         detect_args: "--detect.source.path=${{ github.workspace }}/nodejs-npm"
       env:
         DETECT_PROJECT_NAME: ${{ github.event.repository.name }}
+
+        
